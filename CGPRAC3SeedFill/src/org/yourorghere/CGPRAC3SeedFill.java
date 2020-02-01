@@ -1,7 +1,4 @@
 package org.yourorghere;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.util.*;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -93,27 +90,18 @@ class ThirdGLEventListener implements GLEventListener {
         Bresenham(gl, 100,100, 200, 200);
         Bresenham(gl, 100,200, 200, 100);
         Bresenham(gl, 200,100, 200, 200);
-        
-        /*Bresenham(gl, 50, 50, 100, 50);
-        Bresenham(gl, 100, 50, 100, 100);
-        Bresenham(gl, 100, 100, 50, 100);
-        Bresenham(gl, 50, 100, 50, 50);
-        */
+
         //seedFill(gl, 225, 225);
         seedFill(gl, 110, 150);
-        //scanLineSeedFill(gl,75,75);
+
     }
     void seedFill(GL gl, int x, int y) {
-        //ByteBuffer b = ByteBuffer.allocate(3);
-        //gl.glReadPixels(x, y, 1, 1, GL.GL_RGB, GL.GL_UNSIGNED_BYTE, b);
         boolean flag = false;
         for (int i = 0; i < xvertices.size(); i++) {
             if (xvertices.get(i) == x && yvertices.get(i) == y) {
                 flag=true;
             }
         }
-//    byte[] pixels=new byte[3];
-//    pixels=b.array();
         if (!flag) {
             gl.glColor3f(50, 100, 150);
             gl.glBegin(GL.GL_POINTS);
@@ -128,51 +116,20 @@ class ThirdGLEventListener implements GLEventListener {
             seedFill(gl, x, y - 1);
         }
     }
-    int savex;
-   
     
-    void scanLineSeedFill(GL gl, int x, int y) {
-        boolean flag = false;
-        int xleft,xright;
-        for (int i = 0; i < xvertices.size(); i++) {
-            if (xvertices.get(i) == x && yvertices.get(i) == y) {
-                flag = true;
-            }
-        }
-        if (!flag) {
-            gl.glColor3f(200, 5, 5);
-            gl.glBegin(GL.GL_POINTS);
-           
-            xvertices.add(x);
-            yvertices.add(y);
-            savex=x;
-           
-            gl.glVertex2i(x, y);
-           
-            while(!xvertices.contains(savex)) {
-                savex++;
-                gl.glVertex2i(savex, y);
-            }
-           
-            gl.glEnd();
-        }
-    }
+    int savex;
     public void dispose(GLAutoDrawable arg0) {
     }
 }
 public class CGPRAC3SeedFill {
     public static void main(String args[]) {
-//getting the capabilities object of GL2 profile
-//final GLProfile profile=GLProfile.get(GLProfile.GL);
         GLCapabilities capabilities = new GLCapabilities();
         final GLCanvas glcanvas = new GLCanvas(capabilities);
         ThirdGLEventListener b = new ThirdGLEventListener();
         glcanvas.addGLEventListener(b);
         glcanvas.setSize(400, 400);
-//creating frame
         final JFrame frame = new JFrame("Basic frame");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//adding canvas to frame
         frame.add(glcanvas);
         frame.setSize(640, 480);
         frame.setVisible(true);
